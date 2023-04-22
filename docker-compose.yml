@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'product_service'
+    build:
+      context: .
+    container_name: app
+    ports:
+      - "8089:8089"
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.64.0/24

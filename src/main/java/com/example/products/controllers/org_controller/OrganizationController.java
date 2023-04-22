@@ -15,7 +15,10 @@ public class OrganizationController {
 
     @Autowired
     OrganizationService organizationService;
-
+    @GetMapping("/test")
+    ResponseEntity<String> test(){
+        return ResponseEntity.ok("OK");
+    }
     @PostMapping("/add")
     ResponseEntity<String> addOrganization(@RequestBody OrganizationDTO organizationDTO){
         try {
