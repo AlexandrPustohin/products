@@ -1,5 +1,6 @@
 package com.example.products.controllers.product_controller;
 
+import com.example.products.exceptions.organizationException.OrganizationNotFoundException;
 import com.example.products.exceptions.productExceptions.ProductNotFoundException;
 import com.example.products.model.DTO.ProductDTO;
 import com.example.products.services.ProductService;
@@ -15,9 +16,10 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping("/add")
-    ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO){
-        productService.saveProduct(productDTO);
+    @PostMapping("/add/{org_id}")
+    ResponseEntity<String> addProduct(@RequestBody ProductDTO productDTO,
+                                      @PathVariable("org_id") Long organizationId) throws OrganizationNotFoundException {
+        productService.saveProduct(productDTO, organizationId);
         return ResponseEntity.ok("Добавлен продукт");
     }
     @GetMapping("/{productId}")

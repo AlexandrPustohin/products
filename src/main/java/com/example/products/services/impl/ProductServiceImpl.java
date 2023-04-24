@@ -1,9 +1,11 @@
 package com.example.products.services.impl;
 
+import com.example.products.exceptions.organizationException.OrganizationNotFoundException;
 import com.example.products.exceptions.productExceptions.ProductNotFoundException;
 import com.example.products.model.DTO.ProductDTO;
 import com.example.products.model.DTO.factoryDTO.ProductDTOFactory;
 import com.example.products.model.Product;
+import com.example.products.repository.OrganizationRepository;
 import com.example.products.repository.PriceRepository;
 import com.example.products.repository.ProductRepository;
 import com.example.products.services.ProductService;
@@ -21,14 +23,20 @@ public class ProductServiceImpl implements ProductService {
     ProductDTOFactory productDTOFactory;
     @Autowired
     private PriceRepository priceRepository;
+    @Autowired
+    private OrganizationRepository organizationRepository;
 
     @Override
-    public void saveProduct(ProductDTO productDTO) {
-        //добавление организации если нет ID и есть организация
-        if(productDTO.getProduct_id()==null &&
-           productDTO.getOrganization()!=null ){
-            productRepository.save(productDTOFactory.fromDTOToProduct(productDTO));
-        }//TODO - добавить изменение если есть ID и организация
+    public void saveProduct(ProductDTO productDTO, Long organizationId) throws OrganizationNotFoundException {
+        //добавление продукта если нет ID и есть организация
+        if(organizationRepository.findById(organizationId)==null ){
+            throw new OrganizationNotFoundException("Такая организация не найдена!");
+        }else{
+            if(productDTO.getProduct_id()==null){//нет номера значит новый продукт
+                productDTO.setOrganization(organizationId);
+                productRepository.save(productDTOFactory.fromDTOToProduct(productDTO));
+            }//TODO - добавить изменение если есть ID и организация
+        }
     }
 
     @Override

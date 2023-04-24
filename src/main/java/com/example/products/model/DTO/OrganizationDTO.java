@@ -18,5 +18,5 @@ public class OrganizationDTO {
     private String logo;
     private boolean isActive;//бан
     private boolean isDeleted;//пометка на удаление
-    private List<Product> products;
+
 }

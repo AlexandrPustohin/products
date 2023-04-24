@@ -10,18 +10,22 @@ POST http://localhost:8089/v1/org/add
 "isDeleted": false
 }
 
+Получение организации по ИД
+GET http://localhost:8089/v1/org/{1}
+Получение всех организаций
+GET http://localhost:8089/v1/org/all
 Бан для организации
 GET http://localhost:8089/v1/org/1/setban
 Снятие бана
 GET http://localhost:8089/v1/org/1/setnoban
 
-Добавление продукта
-POST http://localhost:8089/v1/prod/add
+
+Добавление продукта для организации (id = 1)
+POST http://localhost:8089/v1/prod/add/{1}
 {
 "name": "Хлеб",
 "description":"Дарницкий ",
-"count": 20,
-"organization": 4 //
+"count": 20
 }
 
 Получение продукта по ID

@@ -1,5 +1,6 @@
 package com.example.products.services.impl;
 
+import com.example.products.exceptions.organizationException.OrganizationNotFoundException;
 import com.example.products.model.DTO.OrganizationDTO;
 import com.example.products.model.DTO.factoryDTO.OrganizationDTOFactory;
 import com.example.products.model.Organization;
@@ -49,12 +50,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization getOrganization(Long organizationId){
+    public Organization getOrganization(Long organizationId) throws OrganizationNotFoundException {
         Optional<Organization> organization = organizationRepository.findById(organizationId);
-        if(organization.isPresent()){
-           return organization.get();
+        if(!organization.isPresent()){
+           throw new OrganizationNotFoundException("Такая организация не найдена!");
         }
-        return null;
+        return organization.get();
     }
 
     @Override

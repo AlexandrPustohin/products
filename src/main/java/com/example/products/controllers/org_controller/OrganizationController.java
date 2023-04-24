@@ -15,22 +15,17 @@ public class OrganizationController {
 
     @Autowired
     OrganizationService organizationService;
-    @GetMapping("/test")
-    ResponseEntity<String> test(){
-        return ResponseEntity.ok("OK");
-    }
+
     @PostMapping("/add")
     ResponseEntity<String> addOrganization(@RequestBody OrganizationDTO organizationDTO){
-        try {
-            organizationService.saveOrganization(organizationDTO);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            return ResponseEntity.ok("Save failed!!!");
-        }
-
+        organizationService.saveOrganization(organizationDTO);
         return ResponseEntity.ok("Save successful!!!");
     }
 
+    @GetMapping("/{org_id}")
+    ResponseEntity<OrganizationDTO> geOrganizationById(@PathVariable("org_id") Long organizationId){
+        return ResponseEntity.ok(organizationService.getOrganizationDTO(organizationId));
+    }
     @GetMapping("/all")
     public ResponseEntity<List<OrganizationDTO>> getAllOrganization(){
         return ResponseEntity.ok(organizationService.getAllOrganizations());

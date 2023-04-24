@@ -1,5 +1,6 @@
 package com.example.products.model.DTO.factoryDTO;
 
+import com.example.products.exceptions.organizationException.OrganizationNotFoundException;
 import com.example.products.model.DTO.ProductDTO;
 import com.example.products.model.Product;
 import com.example.products.services.OrganizationService;
@@ -24,7 +25,7 @@ public class ProductDTOFactory {
                 .build();
     }
 
-    public Product fromDTOToProduct(ProductDTO productDTO){
+    public Product fromDTOToProduct(ProductDTO productDTO) throws OrganizationNotFoundException {
         return Product.builder()
                 .name(productDTO.getName())
                 .description(productDTO.getDescription())
