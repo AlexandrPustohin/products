@@ -20,10 +20,23 @@ public class OrganizationServiceImpl implements OrganizationService {
     OrganizationDTOFactory organizationDTOFactory;
 
     @Override
-    public void saveOrganization(OrganizationDTO organizationDTO){
-        if(organizationDTO.getId()==null){
-            addOrganisation(organizationDTO);
+    public Long addEditOrganization(OrganizationDTO organizationDTO) throws OrganizationNotFoundException {
+        Long id = null;
+        if(organizationDTO.getId()!=null) {
+            Optional<Organization> organizationOptional = organizationRepository.findById(organizationDTO.getId());
+            if (organizationOptional.isPresent()) {
+                Organization organization = organizationOptional.get();
+                organization.setName(organizationDTO.getName());
+                organization.setDescription(organizationDTO.getDescription());
+                organization.setLogo(organizationDTO.getLogo());
+                organizationRepository.save(organization);
+            } else {
+                throw new OrganizationNotFoundException("Ошибка редактирования. Организация не найдена!");
+            }
+        } else {
+            return addOrganization(organizationDTO);
         }
+        return id;
     }
 
     @Override
@@ -32,9 +45,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         return  organizationDTOFactory.fromOrganizationToDTOList(organizations);
     }
 
-    @Override
-    public void addOrganisation(OrganizationDTO organizationDTO) {
-        organizationRepository.save(organizationDTOFactory.fromDTOToNewOrganization(organizationDTO));
+    private Long addOrganization(OrganizationDTO organizationDTO) {
+        return organizationRepository.save(organizationDTOFactory.fromDTOToNewOrganization(organizationDTO)).getId();
     }
 
 

@@ -7,7 +7,7 @@ import com.example.products.model.Organization;
 import java.util.List;
 
 public interface OrganizationService {
-    void saveOrganization(OrganizationDTO organizationDTO);
+    Long addEditOrganization(OrganizationDTO organizationDTO) throws OrganizationNotFoundException;
     List<OrganizationDTO> getAllOrganizations();
     OrganizationDTO getOrganizationDTO(Long id);
     Organization    getOrganization(Long id) throws OrganizationNotFoundException;
@@ -15,5 +15,5 @@ public interface OrganizationService {
     boolean isActive(Long organizationId);
     boolean isActive(String name);
     void setActive(Long organizationId, boolean value);
-    void addOrganisation(OrganizationDTO organizationDTO);
+
 }

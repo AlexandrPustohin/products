@@ -1,5 +1,6 @@
 package com.example.products.controllers.org_controller;
 
+import com.example.products.exceptions.organizationException.OrganizationNotFoundException;
 import com.example.products.model.DTO.OrganizationDTO;
 import com.example.products.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,14 @@ public class OrganizationController {
     @Autowired
     OrganizationService organizationService;
 
-    @PostMapping("/add")
-    ResponseEntity<String> addOrganization(@RequestBody OrganizationDTO organizationDTO){
-        organizationService.saveOrganization(organizationDTO);
-        return ResponseEntity.ok("Save successful!!!");
+    @PostMapping("/add_edit")
+    ResponseEntity<String> addOrganization(@RequestBody OrganizationDTO organizationDTO) throws OrganizationNotFoundException {
+        Long organizationId = organizationService.addEditOrganization(organizationDTO);
+        if (organizationId!=null){
+            return ResponseEntity.ok("Save successful! Organization id: "+organizationId);
+        } else {
+            return ResponseEntity.ok("Edit successful! Organization id: " + organizationDTO.getId());
+        }
     }
 
     @GetMapping("/{org_id}")
